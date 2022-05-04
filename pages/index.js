@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import Header from 'components/Header'
 import Image from 'next/image'
 import dateformat from 'utils/dateformat'
+import Filters from 'components/Filters'
+import Select from 'components/Select'
 
 export async function getServerSideProps() {
   const ridesResp = await fetch('https://assessment.api.vweb.app/rides')
@@ -21,12 +23,50 @@ export async function getServerSideProps() {
   return { notFound: true }
 }
 
-const Nearest = ({ ridesData, userData }) => {
-  const [rides, setRides] = useState(ridesData ?? [])
+const Nearest = ({ ridesData, locations, userData }) => {
+  const [rides, setRides] = useState([])
+
+  const [selectedState, setSelectedState] = useState('')
+  const [selectedCity, setSelectedCity] = useState('')
+
+  const states = useMemo(
+    () =>
+      locations
+        .map(({ state }) => state)
+        .filter((v, i, a) => a.indexOf(v) === i)
+        .sort((a, b) => a > b),
+    []
+  )
+
+  const cities = useMemo(() => {
+    setSelectedCity('')
+    return locations
+      .filter(({ state }) => state === selectedState)
+      .map(({ city }) => city)
+      .filter((v, i, a) => a.indexOf(v) === i)
+      .sort((a, b) => a > b)
+  }, [selectedState])
+
+  useEffect(() => {
+    if (selectedState.length > 0) {
+      if (selectedCity.length > 0)
+        setRides(ridesData.filter(({ state, city }) => state === selectedState && city === selectedCity))
+      else setRides(ridesData.filter(({ state }) => state === selectedState))
+    } else setRides(ridesData)
+  }, [selectedState, selectedCity])
+
   return (
     <div>
       <Header username={userData.name} />
       <div className='min-h-screen py-7 px-11 bg-[#292929]'>
+        <div className='flex justify-between items-center mb-7 mx-1'>
+          <div>---</div>
+          <Filters>
+            <h3 className='mb-5 pb-2 px-1 font-light text-xl text-[#a5a5a5] border-b border-[#cbcbcb]'>Filters</h3>
+            <Select items={states} value={selectedState} placeholder='Select State' onChange={setSelectedState} />
+            <Select items={cities} value={selectedCity} placeholder='Select City' onChange={setSelectedCity} />
+          </Filters>
+        </div>
         <div className='space-y-3'>
           {rides.map((ride, index) => (
             <div key={'ride-' + index} className='flex space-x-11 py-5 px-7 rounded-xl bg-[#171717] text-white'>

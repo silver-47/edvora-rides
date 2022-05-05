@@ -8,8 +8,8 @@ import RidesList from 'components/RidesList'
 
 export async function getServerSideProps() {
   try {
-    const ridesResp = await fetch('https://assessment.api.vweb.app/rides')
-    const userResp = await fetch('https://assessment.api.vweb.app/user')
+    const ridesResp = await fetch(`${process.env.API_URL}/rides`)
+    const userResp = await fetch(`${process.env.API_URL}/user`)
 
     if (!ridesResp.ok) throw new Error('Rides response error! Status Code: ' + ridesResp.status)
     if (!userResp.ok) throw new Error('User response error! Status Code: ' + userResp.status)

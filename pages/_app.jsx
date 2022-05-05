@@ -1,6 +1,7 @@
 import 'tailwindcss/tailwind.css'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 import LoadingScreen from 'components/LoadingScreen'
 
 function MyApp({ Component, pageProps }) {
@@ -17,7 +18,14 @@ function MyApp({ Component, pageProps }) {
     }
   }, [])
 
-  return loading ? <LoadingScreen /> : <Component {...pageProps} />
+  return (
+    <>
+      <Head>
+        <title>Edvora Rides</title>
+      </Head>
+      {loading ? <LoadingScreen /> : <Component {...pageProps} />}
+    </>
+  )
 }
 
 export default MyApp

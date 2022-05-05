@@ -15,19 +15,18 @@ class MyDocument extends Document {
           <link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png' />
           <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png' />
           <link rel='manifest' href='/site.webmanifest' />
-          <link rel='mask-icon' href='/safari-pinned-tab.svg' color='#3dbc75' />
-          <meta name='msapplication-TileColor' content='#3dbc75' />
+          <link rel='mask-icon' href='/safari-pinned-tab.svg' color='#292929' />
+          <meta name='msapplication-TileColor' content='#ffffff' />
           <meta name='theme-color' content='#ffffff' />
           <link rel='preconnect' href='https://fonts.googleapis.com' />
           <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin='true' />
           <link
-            href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'
+            href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap'
             rel='stylesheet'
           />
         </Head>
         <body>
           <Main />
-          <div id='overlay-root' />
           <NextScript />
         </body>
       </Html>
